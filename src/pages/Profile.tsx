@@ -1,159 +1,96 @@
-import React, { useState, useEffect } from 'react';
-import { User, Trophy, Flame, TreePine, Globe } from 'lucide-react';
+import React from 'react';
+import { User, Trophy, Flame, Activity, Settings, LogOut } from 'lucide-react';
 import { clsx } from 'clsx';
 
 export default function Profile() {
-  const [stats, setStats] = useState({
-    xp: 0,
-    wordsLearned: 0,
-    languagesExplored: 0,
-    streak: 3 // Mock streak for MVP
-  });
-  const [username, setUsername] = useState('Explorer');
-  const [isEditing, setIsEditing] = useState(false);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // Load username from local storage
-    const savedName = localStorage.getItem('wordquest_username');
-    if (savedName) setUsername(savedName);
-
-    fetchStats();
-  }, []);
-
-  const fetchStats = async () => {
-    try {
-      const res = await fetch('/api/trees');
-      const trees = await res.json();
-      
-      let totalXp = 0;
-      let languages = new Set<string>();
-      
-      for (const tree of trees) {
-        totalXp += tree.xp;
-        
-        // Fetch nodes to find languages
-        const nRes = await fetch(`/api/trees/${tree.id}`);
-        const tData = await nRes.json();
-        const translations = tData.nodes.filter((n: any) => n.type === 'translation');
-        translations.forEach((t: any) => {
-          try {
-            if (t.meta) languages.add(JSON.parse(t.meta).language);
-          } catch (e) {}
-        });
-      }
-
-      setStats({
-        xp: totalXp,
-        wordsLearned: trees.length,
-        languagesExplored: languages.size,
-        streak: 3
-      });
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleSaveName = () => {
-    localStorage.setItem('wordquest_username', username);
-    setIsEditing(false);
-  };
-
-  if (loading) return <div className="p-6 text-[#8892b0] text-center">Loading profile...</div>;
-
   return (
-    <div className="p-6 max-w-2xl mx-auto pb-32">
-      <header className="mb-12 flex items-center gap-6">
-        <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[#64ffda] to-[#0a192f] flex items-center justify-center border-4 border-[#112240] shadow-[0_0_30px_rgba(100,255,218,0.2)]">
-          <User size={48} className="text-[#0a192f]" />
+    <div className="space-y-8">
+      <header className="flex flex-col md:flex-row items-center gap-8">
+        <div className="w-32 h-32 neo-container bg-brand-yellow flex items-center justify-center overflow-hidden">
+          <User size={80} className="text-brand-black" />
         </div>
-        
-        <div>
-          {isEditing ? (
-            <div className="flex gap-2 items-center mb-2">
-              <input 
-                type="text" 
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="bg-[#112240] border border-[#233554] rounded px-3 py-1 text-white focus:outline-none focus:border-[#64ffda]"
-                autoFocus
-              />
-              <button onClick={handleSaveName} className="text-[#64ffda] text-sm font-bold uppercase tracking-wider hover:underline">Save</button>
-            </div>
-          ) : (
-            <div className="flex gap-4 items-center mb-2">
-              <h1 className="text-4xl font-bold text-white">{username}</h1>
-              <button onClick={() => setIsEditing(true)} className="text-[#8892b0] text-sm hover:text-[#64ffda] transition-colors">Edit</button>
-            </div>
-          )}
-          <p className="text-[#8892b0] flex items-center gap-2">
-            <Trophy size={16} className="text-[#fcd34d]" /> Level {Math.floor(stats.xp / 500) + 1} Explorer
-          </p>
+        <div className="text-center md:text-left">
+          <h1 className="text-5xl font-black uppercase italic tracking-tighter">Marcus <span className="text-brand-pink">Aurelius</span></h1>
+          <p className="text-xl font-bold uppercase tracking-widest text-gray-500">Rank: Elite Operator • Level 42</p>
+          <div className="flex gap-4 mt-4 justify-center md:justify-start">
+            <button className="neo-button text-xs py-2">Edit Profile</button>
+            <button className="neo-button bg-white text-xs py-2"><Settings size={16} /></button>
+          </div>
         </div>
       </header>
 
-      <div className="grid grid-cols-2 gap-4 mb-12">
-        <StatBox 
-          icon={<Trophy size={24} className="text-[#fcd34d]" />}
-          label="Total XP"
-          value={stats.xp.toString()}
-          color="border-[#fcd34d]/30"
-        />
-        <StatBox 
-          icon={<Flame size={24} className="text-[#ff6b6b]" />}
-          label="Day Streak"
-          value={stats.streak.toString()}
-          color="border-[#ff6b6b]/30"
-        />
-        <StatBox 
-          icon={<TreePine size={24} className="text-[#10b981]" />}
-          label="Words Learned"
-          value={stats.wordsLearned.toString()}
-          color="border-[#10b981]/30"
-        />
-        <StatBox 
-          icon={<Globe size={24} className="text-[#60a5fa]" />}
-          label="Languages"
-          value={stats.languagesExplored.toString()}
-          color="border-[#60a5fa]/30"
-        />
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <StatBox label="Total Reps" value="12,450" icon={<Activity size={24} />} color="bg-white" />
+        <StatBox label="Current Streak" value="14 Days" icon={<Flame size={24} />} color="bg-brand-yellow" />
+        <StatBox label="Missions" value="156" icon={<Trophy size={24} />} color="bg-brand-pink" textColor="text-white" />
       </div>
 
-      <div className="bg-[#112240] border border-[#233554] rounded-xl p-6">
-        <h2 className="text-xl font-bold text-white mb-4">Recent Achievements</h2>
-        <div className="space-y-4">
-          <div className="flex items-center gap-4 p-4 bg-[#0a192f] rounded-lg border border-[#233554]">
-            <div className="w-12 h-12 rounded-full bg-[#64ffda]/20 flex items-center justify-center border border-[#64ffda]/50">
-              <TreePine size={24} className="text-[#64ffda]" />
-            </div>
-            <div>
-              <h3 className="font-bold text-white">First Sprout</h3>
-              <p className="text-sm text-[#8892b0]">Planted your first word tree.</p>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Achievements */}
+        <section className="neo-container p-6 bg-white">
+          <h2 className="text-2xl font-black uppercase mb-6">Tactical Achievements</h2>
+          <div className="grid grid-cols-2 gap-4">
+            <Achievement icon="🥊" title="Speed Demon" desc="100 strikes in 60s" />
+            <Achievement icon="🏋️" title="Power House" desc="500kg total volume" />
+            <Achievement icon="🏃" title="Marathoner" desc="100 miles tracked" />
+            <Achievement icon="🔥" title="Unstoppable" desc="30 day streak" />
+          </div>
+        </section>
+
+        {/* Settings/Danger Zone */}
+        <section className="space-y-6">
+          <div className="neo-card">
+            <h3 className="text-xl font-black uppercase mb-4">Account Settings</h3>
+            <div className="space-y-2">
+              <SettingItem label="Notifications" active />
+              <SettingItem label="Public Profile" active />
+              <SettingItem label="GPS High Precision" />
+              <SettingItem label="Coach Voice (Brutal)" active />
             </div>
           </div>
-          <div className="flex items-center gap-4 p-4 bg-[#0a192f] rounded-lg border border-[#233554] opacity-50 grayscale">
-            <div className="w-12 h-12 rounded-full bg-[#fcd34d]/20 flex items-center justify-center border border-[#fcd34d]/50">
-              <Globe size={24} className="text-[#fcd34d]" />
-            </div>
-            <div>
-              <h3 className="font-bold text-white">Polyglot</h3>
-              <p className="text-sm text-[#8892b0]">Explore 3 different languages. (Locked)</p>
-            </div>
-          </div>
-        </div>
+          
+          <button className="w-full neo-button bg-brand-black text-white py-4 flex items-center justify-center gap-2">
+            <LogOut size={20} /> Terminate Session
+          </button>
+        </section>
       </div>
     </div>
   );
 }
 
-function StatBox({ icon, label, value, color }: { icon: React.ReactNode, label: string, value: string, color: string }) {
+function StatBox({ label, value, icon, color, textColor = "text-brand-black" }: { label: string; value: string; icon: React.ReactNode; color: string; textColor?: string }) {
   return (
-    <div className={clsx("bg-[#112240] border rounded-xl p-6 flex flex-col items-center justify-center text-center transition-transform hover:-translate-y-1", color)}>
-      <div className="mb-3">{icon}</div>
-      <div className="text-3xl font-bold text-white mb-1 font-mono">{value}</div>
-      <div className="text-xs text-[#8892b0] uppercase tracking-wider font-bold">{label}</div>
+    <div className={clsx("neo-card flex items-center justify-between", color, textColor)}>
+      <div>
+        <p className="text-xs font-black uppercase opacity-60">{label}</p>
+        <p className="text-4xl font-black italic tracking-tighter">{value}</p>
+      </div>
+      <div className="p-3 border-2 border-brand-black bg-white text-brand-black">
+        {icon}
+      </div>
+    </div>
+  );
+}
+
+function Achievement({ icon, title, desc }: { icon: string; title: string; desc: string }) {
+  return (
+    <div className="p-4 border-2 border-brand-black flex items-center gap-3">
+      <span className="text-3xl">{icon}</span>
+      <div>
+        <h4 className="font-black uppercase text-sm">{title}</h4>
+        <p className="text-[10px] font-bold text-gray-500 uppercase">{desc}</p>
+      </div>
+    </div>
+  );
+}
+
+function SettingItem({ label, active = false }: { label: string; active?: boolean }) {
+  return (
+    <div className="flex items-center justify-between p-3 border-2 border-brand-black">
+      <span className="font-bold uppercase text-sm">{label}</span>
+      <div className={clsx("w-10 h-6 border-2 border-brand-black p-1 transition-colors", active ? "bg-brand-yellow" : "bg-gray-200")}>
+        <div className={clsx("w-3 h-full bg-brand-black transition-transform", active ? "translate-x-4" : "translate-x-0")} />
+      </div>
     </div>
   );
 }

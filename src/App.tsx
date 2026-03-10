@@ -3,12 +3,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Landing from './pages/Landing';
-import HomeForest from './pages/HomeForest';
-import TreeBuilder from './pages/TreeBuilder';
-import DailyQuest from './pages/DailyQuest';
-import LanguageMap from './pages/LanguageMap';
+import Dashboard from './pages/Dashboard';
+import WorkoutSession from './pages/WorkoutSession';
+import NutritionScan from './pages/NutritionScan';
+import GPSTracker from './pages/GPSTracker';
 import Profile from './pages/Profile';
 import Layout from './components/Layout';
 
@@ -18,10 +19,11 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/app" element={<Layout />}>
-          <Route index element={<HomeForest />} />
-          <Route path="tree/:id" element={<TreeBuilder />} />
-          <Route path="quest" element={<DailyQuest />} />
-          <Route path="map" element={<LanguageMap />} />
+          <Route index element={<Navigate to="/app/dashboard" replace />} />
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="workout/:type" element={<WorkoutSession />} />
+          <Route path="nutrition" element={<NutritionScan />} />
+          <Route path="gps" element={<GPSTracker />} />
           <Route path="profile" element={<Profile />} />
         </Route>
       </Routes>

@@ -1,5 +1,5 @@
 {
-  "name": "",
-  "description": "",
-  "requestFramePermissions": []
+  "name": "ForgeFlow",
+  "description": "A Neobrutalist fitness tracking app with MediaPipe pose tracking, GPS tracking, and AI coaching.",
+  "requestFramePermissions": ["camera", "geolocation"]
 }

@@ -1,89 +1,123 @@
-import { Link } from 'react-router-dom';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { Leaf, Sword, Brain, Globe } from 'lucide-react';
+import { Dumbbell, Zap, Target, Shield, ArrowRight } from 'lucide-react';
+import { Logo } from '../components/Logo';
 
 export default function Landing() {
   return (
-    <div className="min-h-screen bg-[#0a192f] text-[#ccd6f6] font-sans selection:bg-[#64ffda] selection:text-[#0a192f]">
+    <div className="min-h-screen bg-white text-brand-black selection:bg-brand-yellow selection:text-brand-black overflow-x-hidden">
       {/* Navbar */}
-      <nav className="flex justify-between items-center p-6 max-w-7xl mx-auto">
-        <div className="flex items-center gap-2">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#64ffda] to-[#0a192f] flex items-center justify-center border-2 border-[#64ffda]">
-            <span className="text-[#0a192f] font-bold text-xl">WQ</span>
-          </div>
-          <span className="text-2xl font-bold tracking-tighter text-white">Word-Quest</span>
-        </div>
+      <nav className="flex justify-between items-center p-6 max-w-7xl mx-auto border-b-4 border-brand-black">
+        <Logo />
         <div className="flex gap-4 items-center">
-          <Link to="/app" className="text-[#8892b0] hover:text-[#64ffda] transition-colors text-sm font-medium uppercase tracking-widest">Login</Link>
-          <Link to="/app" className="bg-transparent border border-[#64ffda] text-[#64ffda] px-4 py-2 rounded text-sm font-medium hover:bg-[#64ffda]/10 transition-colors uppercase tracking-widest">Play Demo</Link>
+          <Link to="/app" className="font-black uppercase tracking-widest text-sm hover:text-brand-pink transition-colors">Login</Link>
+          <Link to="/app" className="neo-button text-sm py-2">Join the Forge</Link>
         </div>
       </nav>
 
-      {/* Hero */}
-      <main className="max-w-7xl mx-auto px-6 pt-20 pb-32 flex flex-col items-center text-center">
-        <motion.h1 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-5xl md:text-7xl font-bold text-white max-w-4xl leading-tight mb-6"
-        >
-          Grow your vocabulary into a <span className="text-[#64ffda]">living forest.</span>
-        </motion.h1>
-        
-        <motion.p 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="text-xl text-[#8892b0] max-w-2xl mb-12"
-        >
-          Master languages through active recall, spaced repetition, and semantic network graphs. Turn words into trees, and trees into a forest of knowledge.
-        </motion.p>
+      {/* Hero Section */}
+      <main className="max-w-7xl mx-auto px-6 py-20 grid lg:grid-cols-2 gap-12 items-center">
+        <div className="space-y-8">
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="inline-block bg-brand-pink text-white px-4 py-1 border-2 border-brand-black font-black uppercase tracking-widest text-sm italic"
+          >
+            Tactical Fitness Intelligence
+          </motion.div>
+          
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-7xl md:text-9xl font-black uppercase italic tracking-tighter leading-[0.85]"
+          >
+            Forge Your <br />
+            <span className="text-brand-yellow stroke-black stroke-2">Legacy.</span>
+          </motion.h1>
+          
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-2xl font-bold uppercase tracking-tight max-w-xl leading-tight"
+          >
+            Computer vision rep tracking. GPS tactical mapping. AI nutrition analysis. No excuses. Just results.
+          </motion.p>
 
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="flex flex-col sm:flex-row gap-4"
-        >
-          <Link to="/app" className="bg-[#64ffda] text-[#0a192f] px-8 py-4 rounded font-bold text-lg hover:bg-[#64ffda]/90 transition-colors shadow-[0_0_20px_rgba(100,255,218,0.3)]">
-            Start Your Quest
-          </Link>
-          <button className="bg-[#112240] text-[#ccd6f6] px-8 py-4 rounded font-bold text-lg hover:bg-[#233554] transition-colors border border-[#233554]">
-            Download App (Coming Soon)
-          </button>
-        </motion.div>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="flex flex-col sm:flex-row gap-6"
+          >
+            <Link to="/app" className="neo-button-pink text-2xl py-6 px-12 flex items-center gap-4">
+              Start Training <ArrowRight size={32} />
+            </Link>
+          </motion.div>
+        </div>
 
-        {/* Features Grid */}
-        <div className="grid md:grid-cols-3 gap-8 mt-32 w-full text-left">
-          <FeatureCard 
-            icon={<Brain className="text-[#64ffda]" size={32} />}
-            title="Active Recall"
-            desc="Don't just read definitions. Write them. Build stronger neural pathways by actively retrieving information."
-          />
-          <FeatureCard 
-            icon={<Leaf className="text-[#64ffda]" size={32} />}
-            title="Spaced Repetition"
-            desc="Our SM-2 algorithm ensures you review words right before you forget them, optimizing your learning time."
-          />
-          <FeatureCard 
-            icon={<Globe className="text-[#64ffda]" size={32} />}
-            title="Semantic Networks"
-            desc="Connect synonyms, antonyms, and translations. Build a graph of meaning that mirrors how the brain actually learns."
-          />
+        <div className="relative">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
+            animate={{ opacity: 1, scale: 1, rotate: 0 }}
+            className="neo-container bg-brand-yellow aspect-square relative z-10 overflow-hidden"
+          >
+            <img 
+              src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=1000" 
+              className="w-full h-full object-cover grayscale contrast-125 mix-blend-multiply"
+              alt="Training"
+              referrerPolicy="no-referrer"
+            />
+            <div className="absolute bottom-8 left-8 right-8 neo-container bg-white p-6">
+              <p className="font-black uppercase italic text-3xl">"Pain is temporary. Pride is forever."</p>
+            </div>
+          </motion.div>
+          {/* Decorative background blocks */}
+          <div className="absolute -top-8 -right-8 w-full h-full border-4 border-brand-black -z-10 bg-brand-pink" />
+          <div className="absolute top-8 right-8 w-full h-full border-4 border-brand-black -z-20 bg-brand-black" />
         </div>
       </main>
+
+      {/* Features Section */}
+      <section className="bg-brand-black text-white py-24">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <FeatureCard 
+              icon={<Zap size={40} />}
+              title="Pose Tracking"
+              desc="Real-time MediaPipe analysis ensures perfect form and counts every rep."
+            />
+            <FeatureCard 
+              icon={<Target size={40} />}
+              title="Tactical GPS"
+              desc="Map your missions with precision. Track pace, elevation, and splits."
+            />
+            <FeatureCard 
+              icon={<Shield size={40} />}
+              title="AI Coaching"
+              desc="Sgt. Major Gemini watches your every move and provides brutal feedback."
+            />
+            <FeatureCard 
+              icon={<Dumbbell size={40} />}
+              title="Nutrition Scan"
+              desc="Scan your rations. Understand the impact on your next operation."
+            />
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
 
 function FeatureCard({ icon, title, desc }: { icon: React.ReactNode, title: string, desc: string }) {
   return (
-    <div className="bg-[#112240] p-8 rounded-xl border border-[#233554] hover:-translate-y-2 transition-transform duration-300">
-      <div className="mb-6 bg-[#0a192f] w-16 h-16 rounded-lg flex items-center justify-center border border-[#233554]">
+    <div className="p-8 border-4 border-white hover:bg-brand-yellow hover:text-brand-black transition-all group">
+      <div className="mb-6 text-brand-yellow group-hover:text-brand-black">
         {icon}
       </div>
-      <h3 className="text-xl font-bold text-white mb-3">{title}</h3>
-      <p className="text-[#8892b0] leading-relaxed">{desc}</p>
+      <h3 className="text-2xl font-black uppercase italic mb-4">{title}</h3>
+      <p className="font-bold uppercase tracking-widest text-sm opacity-70 leading-relaxed">{desc}</p>
     </div>
   );
 }
